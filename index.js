@@ -1,11 +1,13 @@
 import Express from "express";
-import usersroute from "./Routes/UsersRoutes.js";
-import loginroute from "./Routes/LoginRoute.js";
-import usersroutesecure from "./Routes/UsersRoutesSecure.js";
-import routeserver from "./Routes/ServerStatus.js";
+import usersroute from "./src/Routes/UsersRoutes.js";
+import loginroute from "./src/Routes/LoginRoute.js";
+import usersroutesecure from "./src/Routes/UsersRoutesSecure.js";
+import routeserver from "./src/Routes/ServerStatus.js";
 import cors from "cors";
-import sequelize from "./Database/Database.js";
+import sequelize from "./src/Database/Database.js";
 import cookieParser from "cookie-parser";
+
+const port = process.env.PORT || 3000;
 
 sequelize.sync().then(() => console.log("Database connected"));
 
@@ -27,4 +29,9 @@ express_server.use(loginroute);
 
 express_server.use(usersroutesecure);
 
-express_server.listen(5000, () => console.log("Server opened on port 5000"));
+express_server.get("/",function(req,res){
+    res.send("Server by Alessandro Geras");
+});
+
+express_server.listen(port, () => {console.log(`Server opened on port: ${port}`)
+});
