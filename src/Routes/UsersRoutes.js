@@ -5,15 +5,18 @@ import bcrypt from "bcrypt";
 
 const usersroute = Router();
 
+//New user register route
 usersroute.post("/users", async(req, res) => {
    const requestusername = req.body.username;
    const password = await bcrypt.hash(req.body.password,10);
    req.body.password = password;
    const user = await User.findOne({where: {username:requestusername}})
    
+   //Check if user exists
    if(user){
       res.status(StatusCodes.FORBIDDEN).send({"Erro": "Usuário Existente"});
    }
+   //If user not exists, create new user
    else{
     await User.create(req.body);
     res.status(StatusCodes.CREATED).send({"Sucesso": "Usuário Criado"});
